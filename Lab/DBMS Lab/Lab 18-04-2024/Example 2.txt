@@ -1,0 +1,40 @@
+Example no.2
+
+mysql> CREATE TABLE Customers (
+    ->     customer_id INT PRIMARY KEY,
+    ->     first_name VARCHAR(50),
+    ->     last_name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE Orders (
+    ->     order_id INT PRIMARY KEY,
+    ->     customer_id INT,
+    ->     order_date DATE,
+    ->     total_amount DECIMAL(10, 2),
+    ->     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> INSERT INTO Customers (customer_id, first_name, last_name) VALUES
+    -> (1, 'Rupa', 'Shinde'),
+    -> (2, 'Rita', 'Raut');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Orders (order_id, customer_id, order_date, total_amount) VALUES
+    -> (1, 1, '2024-04-18', 100.50),
+    -> (2, 2, '2024-04-17', 75.20);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT c.first_name, c.last_name, o.order_date, o.total_amount
+    -> FROM Customers c
+    -> INNER JOIN Orders o ON c.customer_id = o.customer_id;
++------------+-----------+------------+--------------+
+| first_name | last_name | order_date | total_amount |
++------------+-----------+------------+--------------+
+| Rupa       | Shinde    | 2024-04-18 |       100.50 |
+| Rita       | Raut      | 2024-04-17 |        75.20 |
++------------+-----------+------------+--------------+
+2 rows in set (0.00 sec)
